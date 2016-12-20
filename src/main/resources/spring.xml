@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+
+	<!-- SessionFactory, DataSource, etc. omitted -->
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/training" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</bean>
+	
+    <bean id="transactionManager"
+            class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+	<tx:annotation-driven/>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+        <property name="mappingResources">
+            <list>
+                <value>Employee.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <value>
+                hibernate.dialect=org.hibernate.dialect.MySQLDialect
+            </value>
+        </property>
+	</bean>
+		
+	<bean id="employeeDao" class="jp.hannet.sample.dao.EmployeeDaoImp">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="employeeService" class="jp.hannet.sample.service.EmployeeServiceImp">
+		<property name="dao" ref="employeeDao" />
+	</bean>
+
+	
+	<bean id="employeeEditAction" class="jp.hannet.sample.action.EmployeeEditAction" scope="prototype">
+    	<property name="employeeService" ref="employeeService" />
+ 	</bean>
+	<bean id="employeeNewAction" class="jp.hannet.sample.action.EmployeeNewAction" scope="prototype">
+    	<property name="employeeService" ref="employeeService" />
+ 	</bean>
+	<bean id="employeeSearchAction" class="jp.hannet.sample.action.EmployeeSearchAction" scope="prototype">
+    	<property name="employeeService" ref="employeeService" />
+ 	</bean>
+
+	
+</beans>
