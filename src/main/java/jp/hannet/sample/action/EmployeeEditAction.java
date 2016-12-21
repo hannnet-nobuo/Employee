@@ -1,15 +1,11 @@
 package jp.hannet.sample.action;
 
-
-import org.apache.struts2.dispatcher.HttpParameters;
-import org.apache.struts2.interceptor.HttpParametersAware;
-
 import com.opensymphony.xwork2.ActionSupport;
 
 import jp.hannet.sample.model.Employee;
 import jp.hannet.sample.service.IEmployeeService;
 
-public class EmployeeEditAction extends ActionSupport implements HttpParametersAware {
+public class EmployeeEditAction extends ActionSupport {
     
 	private static final long serialVersionUID = 6748172158759628460L;
 	
@@ -17,7 +13,6 @@ public class EmployeeEditAction extends ActionSupport implements HttpParametersA
 	private String name;
 	private String enumber;
 	private String update;
-	private HttpParameters param;
 	
 	private IEmployeeService employeeService; 
 	
@@ -59,30 +54,13 @@ public class EmployeeEditAction extends ActionSupport implements HttpParametersA
 
 	public String execute() throws Exception {
 		
-		String strId = param.get("id").getValue();
-		int id = Integer.parseInt(strId);
-		
-		if (name == null && enumber == null) {
-			// 結果取得
-			Employee map = employeeService.selectById(id);
-			id = map.getId();
-			name = map.getName();
-			enumber = map.getEnumber();
-		} else {
-			Employee map = new Employee();
-			map.setId(id);
-			map.setName(name);
-			map.setEnumber(enumber);				
-			employeeService.update(map);
-			return "finish";
-		}
+		Employee map = new Employee();
+		map.setId(id);
+		map.setName(name);
+		map.setEnumber(enumber);				
+		employeeService.update(map);
 			
         return SUCCESS;
     }
-
-	public void setParameters(HttpParameters arg0) {
-		param = arg0;
-		
-	}
 
 }

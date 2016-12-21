@@ -23,13 +23,15 @@
 					<td><s:property value="name" /></td>
 					<td><s:property value="enumber" /></td>
 					<td>
-						<a href="<s:url namespace="/" action="employeeEdit" ><s:param name="id" ><s:property value="id" /></s:param></s:url>" >編集</a>
+						<s:submit type="button" value="%{id}" name="id" >編集</s:submit>
 					</td>
-					<td><s:submit type="button" value="%{id}" name="delid" >削除</s:submit></td>
+					<td>
+						<s:submit type="button" value="%{id}" name="delid" onclick="return confirm('削除してよろしいですか？')">削除</s:submit>
+					</td>
 				</tr>
 			</s:iterator>
 		</table>
+	<s:submit type="button" value="newEmployee" name="newEmployee" >新規作成</s:submit>
 	</s:form>
-	<p><a href="<s:url namespace="/" action="employeeNew" ></s:url>" >新規作成</a></p>
 </body>
 </html>

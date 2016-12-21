@@ -34,14 +34,10 @@ public class EmployeeNewAction extends ActionSupport {
 	}
 
 	public String execute() throws Exception {
-		if (name != null && enumber != null) {
-			
-			Employee map = new Employee();
-			map.setName(name);
-			map.setEnumber(enumber);
-			employeeService.save(map);
-			return "finish";
-		}
+		Employee map = new Employee();
+		map.setName(name);
+		map.setEnumber(enumber);
+		employeeService.save(map);
 		return SUCCESS;
 	}
 }
